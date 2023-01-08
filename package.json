@@ -1,0 +1,36 @@
+{
+  "name": "authentication",
+  "version": "1.0.0",
+  "description": "authentication applying ",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeetaHaldar/Authentication.git"
+  },
+  "keywords": [
+    "auth",
+    "oauth",
+    "login",
+    "security"
+  ],
+  "author": "Meeta Haldar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MeetaHaldar/Authentication/issues"
+  },
+  "homepage": "https://github.com/MeetaHaldar/Authentication#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^4.13.0",
+    "mongoose": "^6.8.3",
+    "mongoose-encryption": "^2.1.2",
+    "nodemon": "^2.0.20"
+  }
+}
