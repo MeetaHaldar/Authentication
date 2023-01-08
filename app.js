@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const encrypt = require("mongoose-encryption");
 const app = express();
-const md5 = require("md5");
 mongoose.set("strictQuery", false);
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -33,17 +34,19 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  const newUser = new User({
-    email: req.body.username,
-    password: md5(req.body.password),
-  });
+  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    const newUser = new User({
+      email: req.body.username,
+      password: hash,
+    });
 
-  newUser.save((err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("secrets");
-    }
+    newUser.save((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("secrets");
+      }
+    });
   });
 });
 
@@ -55,9 +58,13 @@ app.post("/login", (req, res) => {
       console.log(err);
     } else {
       if (findUser) {
-        if (findUser.password == md5(password)) {
-          res.render("secrets");
-        }
+        bcrypt.compare(password, findUser.password, function (err, result) {
+          if (result) {
+            res.render("secrets");
+          } else {
+            console.log(err.mssg);
+          }
+        });
       }
     }
   });
