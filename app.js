@@ -5,28 +5,30 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const passport = require("passport");
+const path = require("path");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
-
-const findOrCreate = require("mongoose-findorcreate");
 const app = express();
+const findOrCreate = require("mongoose-findorcreate");
 mongoose.set("strictQuery", false);
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname + "/public")));
+
 app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
-mongoose.connect("mongodb://localhost:27017/userdb", { useNewUrlParser: true });
+mongoose.connect(process.env.STRING, { useNewUrlParser: true });
 
 const userSchema = new mongoose.Schema({
   email: String,
